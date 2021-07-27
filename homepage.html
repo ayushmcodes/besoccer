@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMySport</title>
+    <script src="loadfixtures.php"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/d3js/6.3.1/d3.min.js"></script>
+    <script src="https://kit.fontawesome.com/42aa80ac17.js" crossorigin="anonymous"></script>
+    <script src="/path/to/flickity.pkgd.min.js"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <link rel="stylesheet" href="/path/to/flickity.css" media="screen"> 
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+</head>
+<style>
+    body{
+    overflow-x: hidden;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    }
+    ol{
+        list-style-type: none;
+    }
+    #header{
+        height: 80px;
+        width: 100%;
+        background-color:#018DA4;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .headertiles{
+        color: white;
+        position: relative;
+        top: 1.8em;
+        margin-left: 2em;
+        font-weight: 500;
+    }
+    #searchbar{
+        position: relative;
+        height: 25%;
+        width: 30%;
+        top: 1.5em;
+        left: 2em;
+        border-top-left-radius: .5em;
+        border-bottom-left-radius: .5em;
+    }
+    #searchbutton{
+        position: relative;
+        left: 1.6em;
+        top: 1.35em;
+        background-color: white;
+        height: 28.5%;
+        width: 1.5%;
+        border-top-right-radius: .4em;
+        border-bottom-right-radius: .4em;
+    }
+    #headimage{
+        width: 100%;
+        height: 200px;
+    }
+    #homeimage{
+        width: 100%;
+        height: 15em;
+    }
+    #card_box{
+        position: relative;
+        left: 15em;
+        width: 1000px;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+    }
+    .card{
+        height: 13em;
+        width: 40em;
+        margin-bottom: 10px;
+        background-color: #AECFCC;
+    }
+    .cardimage{
+        height: 13em;
+        width: 10em;
+    }
+    .matchname{
+        position: relative;
+        bottom: 75%;
+        left: 30%;
+        font-weight: 700;
+    }
+    .date{
+        position: relative;
+        bottom: 90%;
+        font-size: small;
+        color:white;
+    }
+    .stadium{
+        position: relative;
+        bottom: 90%;
+        font-size: small;
+        color:white;
+        left: 30%;
+    }
+    .ticketsavailable{
+        position: relative;
+        color: white;
+        font-size: small;
+        right: 36.8%;
+        bottom: 2%;
+    }
+    .price{
+        position: relative;
+        color: white;
+        font-size: small;
+        bottom: 2%;
+    }
+    .booknow{
+        position: relative;
+        background-color:white;
+        bottom: 10%;
+        width: 10%;
+        height: 15%;
+        left: 85%;
+        bottom: 55%;
+        border-radius: 5px;
+        font-size: small;
+        font-weight: 550;
+    }
+    .filterbox{
+        display: flexbox;
+        flex-direction: column;
+        align-items: center;
+        width: 15em;
+        height: 20em;
+        background-color: rgb(202, 236, 245);
+        color: wheat;
+        border-radius: 5%;
+        position: absolute;
+        top: 23.5em;
+        left: 10em;
+    }
+    .filterbox_listitem{
+        margin-bottom: 20%;
+    }
+    .applybtn{
+        color: white;
+    }
+    #refundbutton{
+        position:sticky;
+        left: 100em;
+        bottom: 2em;
+        height: 4em;
+        border: none;
+        border-radius: 1em;
+        background-color: rgb(202, 236, 245);
+    }
+</style>
+<body>
+    <div id="header">
+        <span class='headertiles'>Euro 2020</span>
+        <span class='headertiles'>Fantasy</span>
+        <span class='headertiles'>Video</span>
+        <span class='headertiles'>Communities</span>
+        <input id='searchbar' type="text" name="" id="">
+        <i class="fas fa-search" id='searchbutton'></i>
+    </div>
+    <div>
+        <img id='homeimage' src="homeimage.jpg" alt="">
+    </div>
+    <br>
+    <br>
+    <div id='card_box'>
+        <ol id='cardbox' >
+
+        </ol>
+     </div>
+     <div class='filterbox'>
+         <ol>
+             <li class="filterbox_listitem">
+                 <span style="color: white;">Search By Date</span>
+                 <input type="date" name="date" id="date">
+             </li>
+             <li class="filterbox_listitem">
+                <span style="color: white;">Search By Team Name</span>
+                <input type="text" name="teamname" id="teamname" style="width: 67.5%;">
+             </li>
+             <li class="filterbox_listitem">
+                <span style="color: white;">Ticket Price</span>
+                <ol> 
+                    <li style="display: inline; position: relative; right: 2.5em;"><input type="number" name="minprice" id="minprice" style="width: 30%;" placeholder="Min"></li>
+                    <li style="display: inline; position: relative; right: 1em;"><input type="number" name="maxprice" id="maxprice" style="width: 30%;" placeholder="Max"></li>
+                </ol>
+             </li>
+             <li style="position: relative; left: 8em; top: em;">
+                 <button onclick="print()" id="applybtn" style="background-color: white; border-radius: 1em; height: 2.5em; width: 5em;">Apply</button>
+             </li>
+         </ol>
+     </div>
+     <button id='refundbutton' onclick="requestrefund()">Request For Refund</button>
+</body>
+<script>
+    var f=1;
+    print();
+    var date="";
+    var teamname="";
+    var minprice="";
+    var maxprice="";
+    var cardbox=document.getElementById('cardbox');
+    function print()
+    {
+    date=document.getElementById("date").value;
+    teamname=document.getElementById("teamname").value;
+    minprice=document.getElementById("minprice").value;
+    maxprice=document.getElementById("maxprice").value;
+    console.log(date);
+    console.log(teamname);
+    console.log(minprice);
+    if(f==0)
+    {
+        while(cardbox.firstChild)
+        cardbox.removeChild(cardbox.firstChild);
+    }
+    else
+    {
+        f=0;
+    }
+    $.post("loadfixtures.php",{match_id:1,date:date,teamname:teamname,minprice:minprice,maxprice:maxprice},function(data){
+    var fixtures=JSON.parse(data);
+    console.log(fixtures);
+    for(var i=0;i<fixtures.length;i++)
+    {
+        var li=document.createElement('LI');
+        li.id='li';
+
+        var x=document.createElement('DIV');
+        x.className="card";
+        var y=document.createElement('IMG');
+        y.src="cardimage.jpg";
+        y.className='cardimage';
+        x.appendChild(y);
+
+        var date=fixtures[i][4];
+        var _date=document.createElement('span');
+        _date.innerText=date;
+        _date.className='date';
+        x.appendChild(_date);
+
+        var stadium=fixtures[i][3];
+        var _stadium=document.createElement('span');
+        _stadium.innerText=stadium;
+        _stadium.className='stadium';
+        x.appendChild(_stadium);
+
+        var ticketsavailable=fixtures[i][6];
+        var _ticketsavailable=document.createElement('span');
+        _ticketsavailable.innerText="Tickets Available: "+ticketsavailable;
+        _ticketsavailable.className='ticketsavailable';
+        x.appendChild(_ticketsavailable);
+
+        var price=fixtures[i][5];
+        var _price=document.createElement('span');
+        _price.innerText='Price: '+price+"$";
+        _price.className='price';
+        x.appendChild(_price);
+
+
+        var matchno=fixtures[i][0];
+
+
+        var booknow=document.createElement('BUTTON');
+        booknow.innerText='Book Now';
+        booknow.className='booknow';
+        booknow.onclick=function(){
+                window.location.href="http://localhost/bookmysport/bookticketpage.html?matchno="+matchno;
+            }
+
+        x.appendChild(booknow);
+        
+
+        var team1=fixtures[i][1];
+        var team2=fixtures[i][2];
+        var heading="Match "+matchno+" "+team1+" vs "+team2;
+        var matchname=document.createElement('p');
+        matchname.className='matchname';
+        matchname.innerText=heading;
+        x.appendChild(matchname);
+
+        li.appendChild(x);
+        document.getElementById('cardbox').appendChild(li);
+    }
+});
+    }
+    function requestrefund(){
+        window.location.href="http://localhost/bookmysport/requestrefund.html";
+    }
+</script>
+</html>

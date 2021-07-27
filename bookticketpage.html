@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Page</title>
+    <script src="loadfixtures.php"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/d3js/6.3.1/d3.min.js"></script>
+    <script src="https://kit.fontawesome.com/42aa80ac17.js" crossorigin="anonymous"></script>
+    <script src="/path/to/flickity.pkgd.min.js"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <link rel="stylesheet" href="/path/to/flickity.css" media="screen"> 
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+</head>
+<style>
+    body{
+    overflow-x: hidden;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    }
+    ol{
+        list-style-type: none;
+    }
+    #header{
+        height: 80px;
+        width: 100%;
+        background-color:#018DA4;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .headertiles{
+        color: white;
+        position: relative;
+        top: 1.8em;
+        margin-left: 2em;
+        font-weight: 500;
+    }
+    #searchbar{
+        position: relative;
+        height: 25%;
+        width: 30%;
+        top: 1.5em;
+        left: 2em;
+        border-top-left-radius: .5em;
+        border-bottom-left-radius: .5em;
+    }
+    #searchbutton{
+        position: relative;
+        left: 1.6em;
+        top: 1.35em;
+        background-color: white;
+        height: 28.5%;
+        width: 1.5%;
+        border-top-right-radius: .4em;
+        border-bottom-right-radius: .4em;
+    }
+    #headimage{
+        width: 100%;
+        height: 200px;
+    }
+    #homeimage{
+        width: 100%;
+        height: 15em;
+    }
+    .myticket{
+        position: relative;
+        left: 28em;
+        width: 600px;
+        height: 200px;
+        background-color: rgb(192, 238, 247);
+    }
+    .cardimage{
+        height: 200px;
+        width: 150px;
+    }
+    .regform1{
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        position: relative;
+        left: 28em;
+        width: 300px;
+        height: 500px;
+        background-color: rgb(192, 238, 247);
+        border-bottom-left-radius: 1em;
+        border-top-left-radius: 1em;
+    }
+    .regform2{
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        position: relative;
+        bottom: 31.25em;
+        left: 46.7em;
+        width: 300px;
+        height: 500px;
+        background-color: rgb(192, 238, 247);
+        border-bottom-right-radius: 1em;
+        border-top-right-radius: 1em;
+    }
+    .regformitem1{
+        margin-left: 2em;
+    }
+    #popup{
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        height: 110px;
+        width: 160px;
+        background-color: rgb(228, 116, 116);
+        position: relative;
+        left: 42em;
+        bottom: 55em;
+        border-radius: 2em;
+        align-items: center;
+        visibility:hidden;
+    }
+</style>
+<body>
+    <div id="header">
+        <span class='headertiles'>Euro 2020</span>
+        <span class='headertiles'>Fantasy</span>
+        <span class='headertiles'>Video</span>
+        <span class='headertiles'>Communities</span>
+        <input id='searchbar' type="text" name="" id="">
+        <i class="fas fa-search" id='searchbutton'></i>
+    </div>
+    <div>
+        <img id='homeimage' src="homeimage.jpg" alt="">
+    </div>
+    <br><br><br>
+    <p style="position: relative; left: 28em; font-weight: 700; color: rgb(146, 202, 255);">Enter Booking Details</p>
+    <div class='regform1'>
+        <p class='regformitem1'>First Name</p>
+        <input id='firstname' class='regformitem1' type="text" name="" autocomplete="off"> 
+        <p class='regformitem1'>Last Name</p>
+        <input id='lastname' class='regformitem1' type="text" name="" autocomplete="off">
+        <p class='regformitem1'>Phone Number</p>
+        <input id='phoneno' class='regformitem1' type="tel" name="" autocomplete="off">
+        <p class='regformitem1'>Email Address</p>
+        <input id='email' class='regformitem1' type="email" name="" autocomplete="off">
+        <p class='regformitem1'>Number of Ticket you want to book?</p>
+        <select style="width: 5em;" class="regformitem1" id='name'>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        </div>
+        <div class="regform2">
+            <p>Enter Card Number</p>
+            <input type="text" name="" id="" autocomplete="off">
+            <p>Enter Card PIN</p>
+            <input type="text" name="" id="" autocomplete="off">
+            <p>Enter Card CVV</p>
+            <input type="text" name="" id="" autocomplete="off">
+            <p>Total amount to be paid:</p>
+            <p style="position: relative; bottom: 1em;" id='totalamount'>$0</p>
+            <button onclick="pay()" style="position: relative; left: 9em; top: 7em; width: 7em; height: 4em; border-radius: 1em; background-color: white;">Pay Now</button>
+        </div>
+        <br><br><br><br>
+        <div id='popup'>
+            <p id='popupmessage'>Success</p>
+            <button onclick="dismiss()" style="margin-top: 2em; border: none; border-radius: .5em;">Okay</button>
+        </div>
+</body>
+<script>
+var f=-1;
+setInterval(render,100);
+var currently_loged_in_as=localStorage.getItem('key');
+console.log(currently_loged_in_as);
+var price;
+var arr;
+var noofticketsbooked
+var matchno=location.search.split('matchno=')[1];
+console.log(matchno);
+
+function render()
+{
+$.post('loadfixtures.php',{bookingpage:1,matchno:matchno},function(data){
+    arr=JSON.parse(data);
+    price=arr[0][5];
+    noofticketsbooked=document.getElementById('name').value;
+    price=price*noofticketsbooked;
+    document.getElementById('totalamount').innerText="$"+price;
+});
+}
+
+
+function pay(){
+    f=-1;
+    console.log(price);
+    console.log(noofticketsbooked);
+    var firstname=document.getElementById('firstname').value;
+    var lastname=document.getElementById('lastname').value;
+    var phoneno=document.getElementById('phoneno').value;
+    var email=document.getElementById('email').value;
+    $.post('reservedtickets.php',{username:currently_loged_in_as,firstname:firstname,lastname:lastname,phoneno:phoneno,email:email,price:price,noofticketsbooked:noofticketsbooked,matchno:matchno},function(data){
+    console.log(data); 
+    if(data==1)
+    {
+        console.log("Tickets Booked");
+        document.getElementById('popupmessage').innerText='Tickets Booked';
+        document.getElementById('popup').style.backgroundColor='rgb(149, 236, 149)';
+        document.getElementById('popup').style.visibility='visible';
+        f=1;
+        $.post("loadfixtures.php",{matchno:matchno,noofticketsbooked:noofticketsbooked},function(data){
+            
+        });
+    } 
+    else
+    {
+        document.getElementById('popupmessage').innerText='Failed';
+        document.getElementById('popup').style.backgroundColor='rgb(228, 116, 116)';
+        document.getElementById('popup').style.visibility='visible';
+        console.log("Failed");
+        f=0;
+    }
+    });
+}
+
+function dismiss(){
+        document.getElementById('popup').style.visibility='hidden';
+    }
+
+</script>
+</html>
